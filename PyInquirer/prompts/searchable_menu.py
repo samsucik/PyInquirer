@@ -131,6 +131,7 @@ def question(message, **kwargs):
     choices = kwargs.pop('choices', None)
     default = kwargs.pop('default', None)
     qmark = kwargs.pop('qmark', '?')
+    strip_answer = kwargs.pop("strip_answer", False)
     # TODO style defaults on detail level
     style = kwargs.pop('style', default_style)
 
@@ -142,7 +143,9 @@ def question(message, **kwargs):
         tokens.append(('class:questionmark', qmark))
         tokens.append(('class:question', ' %s ' % message))
         if ic.answered:
-            tokens.append(('class:answer', ' ' + ic.get_selection()[0]))
+            answer = ic.get_selection()[0].strip() if strip_answer \
+                else ic.get_selection()[0]
+            tokens.append(('class:answer', ' ' + answer))
         else:
             tokens.append(('class:instruction', ' (Use arrow keys)'))
             tokens.append(('class:answer', ' ' + ic.search_string))  # show search term
