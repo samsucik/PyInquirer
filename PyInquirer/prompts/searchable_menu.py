@@ -32,12 +32,11 @@ class InquirerControl(FormattedTextControl):
         self.choices_all = choices
         self.search_string = ""
         self.default = default
+        self.n_rows_to_show = kwargs.pop("n_rows_to_show", 10)
         self._init_choices()
         super().__init__(self._get_choice_tokens, **kwargs)
 
     def _init_choices(self):
-        n_rows_to_show = 10
-
         self.choices = []  # list (name, value, disabled)
         if self.search_string != "":
             choices = self._filter_choices()
@@ -50,7 +49,7 @@ class InquirerControl(FormattedTextControl):
             return
 
         default_choice_selected = False
-        for i, c in enumerate(choices[:n_rows_to_show]):
+        for i, c in enumerate(choices[:self.n_rows_to_show]):
             if isinstance(c, str):
                 self.choices.append((c, c, None))
             else:
@@ -135,7 +134,7 @@ def question(message, **kwargs):
     # TODO style defaults on detail level
     style = kwargs.pop('style', default_style)
 
-    ic = InquirerControl(choices, default=default)
+    ic = InquirerControl(choices, default=default, **kwargs)
 
     def get_prompt_tokens():
         tokens = []
