@@ -59,6 +59,7 @@ class InquirerControl(FormattedTextControl):
                 self.choices.append((name, value, disabled))
                 if value == self.default:
                     self.selected_option_index = i
+                    default_choice_selected = True
             if self.default and (self.default in [i, c]):
                 self.selected_option_index = i  # default choice exists
                 default_choice_selected = True
